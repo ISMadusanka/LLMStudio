@@ -1,0 +1,20 @@
+# -----------------------------------------------------------------------------
+# GPU training stack. Install on the machine that actually runs fine-tuning.
+#
+# IMPORTANT: Install a CUDA-matched torch FIRST, then Unsloth, following
+# https://docs.unsloth.ai/get-started/installing-+-updating
+# Unsloth pins compatible transformers/trl/peft versions, so installing it
+# last avoids dependency churn.
+#
+#   pip install -r requirements.txt          # core
+#   pip install -r requirements-train.txt    # this file
+# -----------------------------------------------------------------------------
+torch>=2.3
+transformers>=4.44
+trl>=0.9
+peft>=0.12
+accelerate>=0.33
+bitsandbytes>=0.43; platform_system != "Darwin"
+sentencepiece>=0.2
+protobuf>=4.0
+unsloth>=2024.8

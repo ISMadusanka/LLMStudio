@@ -1,0 +1,25 @@
+# -----------------------------------------------------------------------------
+# Convenience requirements file. Prefer installing via the package extras:
+#
+#   pip install -e .            # core only (GUI, data prep, registry, jobs)
+#   pip install -e ".[train]"   # + torch / transformers / trl / peft / unsloth
+#   pip install -e ".[data]"    # + PDF / DOCX / XLSX parsers
+#   pip install -e ".[all]"     # everything except the GPU training stack
+#
+# This file mirrors the CORE dependencies only, so `pip install -r
+# requirements.txt` gives you a bootable UI on any machine. Install the
+# training stack separately on your GPU box (see docs/gpu-and-quantization.md).
+# -----------------------------------------------------------------------------
+pydantic>=2.6
+pydantic-settings>=2.2
+PyYAML>=6.0
+typer>=0.12
+rich>=13.7
+gradio>=4.44,<6
+pandas>=2.0
+huggingface-hub>=0.24
+datasets>=2.20
+SQLAlchemy>=2.0
+psutil>=5.9
+packaging>=23.0
+nvidia-ml-py>=12.0

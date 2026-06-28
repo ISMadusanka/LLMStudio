@@ -1,0 +1,78 @@
+# =============================================================================
+# LLM Studio — default configuration.
+#
+# These are baseline values. Override any of them with:
+#   * a .env file / environment variables, using the LLMSTUDIO_ prefix and
+#     "__" to descend into nested sections, e.g. LLMSTUDIO_SERVER__PORT=8000
+#   * a user config file at $LLMSTUDIO_HOME/config.yaml (deep-merged on top)
+#
+# See docs/configuration.md for the full reference.
+# =============================================================================
+
+app:
+  name: "LLM Studio"
+  environment: "local"          # local | server
+
+# --- Storage -----------------------------------------------------------------
+# `home` is the root for all runtime data. Relative paths resolve against it.
+# Override the root with the LLMSTUDIO_HOME env var (recommended on servers).
+paths:
+  home: "workspace"
+  uploads: "uploads"            # raw user-uploaded files
+  datasets: "datasets"          # validated / formatted datasets
+  runs: "runs"                  # training runs + checkpoints
+  models: "models"             # exported / registered fine-tuned models
+  hf_cache: "hf_cache"          # Hugging Face download cache
+  logs: "logs"
+  registry_db: "registry.sqlite"
+
+# --- Web server (Gradio) -----------------------------------------------------
+server:
+  host: "0.0.0.0"
+  port: 7860
+  share: false                  # create a public Gradio tunnel link
+  auth: null                    # "user:password" to enable basic auth
+  show_error: true
+
+# --- In-app LLM assistant ----------------------------------------------------
+# Powers hyperparameter recommendations and data-prep guidance. Downloaded
+# during `llmstudio setup`. Always unloaded from VRAM before real training
+# starts (see services.training_service). Heuristic fallbacks run even when
+# disabled or unavailable.
+assistant:
+  enabled: true
+  model_id: "Qwen/Qwen2.5-7B-Instruct"
+  fallback_model_id: "Qwen/Qwen2.5-3B-Instruct"
+  min_vram_gb_for_primary: 18.0   # below this free VRAM, prefer the fallback
+  load_in_4bit: true
+  max_new_tokens: 1024
+  temperature: 0.4
+  top_p: 0.9
+  # Keep the assistant resident between calls (faster) or unload eagerly (frees
+  # VRAM). It is ALWAYS unloaded right before a training job starts regardless.
+  keep_resident: false
+
+# --- Training defaults -------------------------------------------------------
+training:
+  seed: 3407
+  max_seq_length: 2048
+  eval_ratio: 0.05              # fraction of data held out for evaluation
+  logging_steps: 1
+  save_steps: 50                # checkpoint cadence (steps)
+  save_total_limit: 3           # keep N most recent checkpoints
+  default_export_format: "lora" # lora | merged_16bit | merged_4bit | gguf
+  packing: false
+  gradient_checkpointing: "unsloth"
+
+# --- GPU / quantization policy ----------------------------------------------
+gpu:
+  vram_safety_factor: 0.85      # usable fraction of total VRAM for fit checks
+  qlora_threshold_gb: 24.0      # below this free VRAM -> recommend QLoRA
+  cpu_offload_allowed: false
+
+# --- Model download policy ---------------------------------------------------
+download:
+  prefer_unsloth_4bit: true     # use unsloth/*-bnb-4bit repos for QLoRA
+  allow_official_fallback: true # fall back to official repo + on-the-fly 4bit
+
+log_level: "INFO"

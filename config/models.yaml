@@ -1,0 +1,456 @@
+# =============================================================================
+# Base-model catalog — the dropdown of fine-tunable open-source LLMs.
+#
+# Each entry:
+#   key             unique slug used internally / in the UI
+#   name            human-friendly display name
+#   family          chat-template / architecture family
+#   hf_id           official Hugging Face repo (full precision)
+#   unsloth_id      Unsloth-maintained full-precision mirror (optional)
+#   unsloth_4bit_id Unsloth pre-quantized bnb-4bit repo (fast QLoRA download)
+#   params_b        parameter count in billions (drives VRAM estimates)
+#   context_length  max context window of the base model
+#   chat_template   template key passed to unsloth.chat_templates.get_chat_template
+#   gated           true if the HF repo requires accepting a license (needs HF_TOKEN)
+#   license         short license label (review upstream before redistributing)
+#   tags            UI filters: recommended | small | general | code | multilingual | reasoning | tiny
+#   description     one-liner shown in the UI
+#
+# NOTE: If an `unsloth_4bit_id` 404s at download time, the downloader falls back
+# to `hf_id` with on-the-fly 4-bit quantization (download.allow_official_fallback).
+# =============================================================================
+
+models:
+  # ---- Meta Llama 3.2 / 3.1 -------------------------------------------------
+  - key: llama-3.2-1b-instruct
+    name: "Llama 3.2 1B Instruct"
+    family: llama
+    hf_id: meta-llama/Llama-3.2-1B-Instruct
+    unsloth_id: unsloth/Llama-3.2-1B-Instruct
+    unsloth_4bit_id: unsloth/Llama-3.2-1B-Instruct-bnb-4bit
+    params_b: 1.24
+    context_length: 131072
+    chat_template: llama-3.1
+    gated: true
+    license: "Llama 3.2 Community License"
+    tags: [tiny, small, general]
+    description: "Ultra-light Llama. Trains on tiny GPUs; great for quick experiments."
+
+  - key: llama-3.2-3b-instruct
+    name: "Llama 3.2 3B Instruct"
+    family: llama
+    hf_id: meta-llama/Llama-3.2-3B-Instruct
+    unsloth_id: unsloth/Llama-3.2-3B-Instruct
+    unsloth_4bit_id: unsloth/Llama-3.2-3B-Instruct-bnb-4bit
+    params_b: 3.21
+    context_length: 131072
+    chat_template: llama-3.1
+    gated: true
+    license: "Llama 3.2 Community License"
+    tags: [recommended, small, general]
+    description: "Best all-round small model. Strong quality, fits modest GPUs with QLoRA."
+
+  - key: llama-3.1-8b-instruct
+    name: "Llama 3.1 8B Instruct"
+    family: llama
+    hf_id: meta-llama/Llama-3.1-8B-Instruct
+    unsloth_id: unsloth/Meta-Llama-3.1-8B-Instruct
+    unsloth_4bit_id: unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit
+    params_b: 8.03
+    context_length: 131072
+    chat_template: llama-3.1
+    gated: true
+    license: "Llama 3.1 Community License"
+    tags: [recommended, general]
+    description: "The workhorse 8B. Excellent quality; QLoRA fits a single 16–24 GB GPU."
+
+  # ---- Alibaba Qwen 2.5 -----------------------------------------------------
+  - key: qwen2.5-0.5b-instruct
+    name: "Qwen2.5 0.5B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-0.5B-Instruct
+    unsloth_id: unsloth/Qwen2.5-0.5B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-0.5B-Instruct-bnb-4bit
+    params_b: 0.49
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [tiny, small, multilingual]
+    description: "Tiny, permissively licensed. Ideal for smoke tests and CPU-light setups."
+
+  - key: qwen2.5-1.5b-instruct
+    name: "Qwen2.5 1.5B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-1.5B-Instruct
+    unsloth_id: unsloth/Qwen2.5-1.5B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-1.5B-Instruct-bnb-4bit
+    params_b: 1.54
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [small, multilingual]
+    description: "Small and capable, Apache-2.0. A safe default when licensing matters."
+
+  - key: qwen2.5-3b-instruct
+    name: "Qwen2.5 3B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-3B-Instruct
+    unsloth_id: unsloth/Qwen2.5-3B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-3B-Instruct-bnb-4bit
+    params_b: 3.09
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Qwen Research License"
+    tags: [small, multilingual]
+    description: "Strong small multilingual model with a long context window."
+
+  - key: qwen2.5-7b-instruct
+    name: "Qwen2.5 7B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-7B-Instruct
+    unsloth_id: unsloth/Qwen2.5-7B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-7B-Instruct-bnb-4bit
+    params_b: 7.62
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [recommended, general, multilingual]
+    description: "Top-tier 7B, Apache-2.0. Also powers the in-app assistant by default."
+
+  - key: qwen2.5-14b-instruct
+    name: "Qwen2.5 14B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-14B-Instruct
+    unsloth_id: unsloth/Qwen2.5-14B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-14B-Instruct-bnb-4bit
+    params_b: 14.7
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [general, multilingual]
+    description: "Higher-capacity Qwen. QLoRA recommended; needs ~16 GB+ VRAM."
+
+  - key: qwen2.5-coder-7b-instruct
+    name: "Qwen2.5 Coder 7B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-Coder-7B-Instruct
+    unsloth_id: unsloth/Qwen2.5-Coder-7B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-Coder-7B-Instruct-bnb-4bit
+    params_b: 7.62
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [code]
+    description: "Code-specialized Qwen. Fine-tune on your codebase or coding tasks."
+
+  # ---- Google Gemma 2 -------------------------------------------------------
+  - key: gemma-2-2b-it
+    name: "Gemma 2 2B Instruct"
+    family: gemma2
+    hf_id: google/gemma-2-2b-it
+    unsloth_id: unsloth/gemma-2-2b-it
+    unsloth_4bit_id: unsloth/gemma-2-2b-it-bnb-4bit
+    params_b: 2.61
+    context_length: 8192
+    chat_template: gemma2
+    gated: true
+    license: "Gemma Terms of Use"
+    tags: [small, general]
+    description: "Compact, high-quality Google model. Accept Gemma terms on HF first."
+
+  - key: gemma-2-9b-it
+    name: "Gemma 2 9B Instruct"
+    family: gemma2
+    hf_id: google/gemma-2-9b-it
+    unsloth_id: unsloth/gemma-2-9b-it
+    unsloth_4bit_id: unsloth/gemma-2-9b-it-bnb-4bit
+    params_b: 9.24
+    context_length: 8192
+    chat_template: gemma2
+    gated: true
+    license: "Gemma Terms of Use"
+    tags: [general]
+    description: "Strong 9B from Google. QLoRA on 16–24 GB GPUs."
+
+  # ---- Mistral --------------------------------------------------------------
+  - key: mistral-7b-instruct-v0.3
+    name: "Mistral 7B Instruct v0.3"
+    family: mistral
+    hf_id: mistralai/Mistral-7B-Instruct-v0.3
+    unsloth_id: unsloth/mistral-7b-instruct-v0.3
+    unsloth_4bit_id: unsloth/mistral-7b-instruct-v0.3-bnb-4bit
+    params_b: 7.25
+    context_length: 32768
+    chat_template: mistral
+    gated: false
+    license: "Apache-2.0"
+    tags: [general]
+    description: "Popular, permissive 7B. Reliable baseline for instruction tuning."
+
+  # ---- Microsoft Phi --------------------------------------------------------
+  - key: phi-3.5-mini-instruct
+    name: "Phi-3.5 Mini Instruct"
+    family: phi-3
+    hf_id: microsoft/Phi-3.5-mini-instruct
+    unsloth_id: unsloth/Phi-3.5-mini-instruct
+    unsloth_4bit_id: unsloth/Phi-3.5-mini-instruct-bnb-4bit
+    params_b: 3.82
+    context_length: 131072
+    chat_template: phi-3
+    gated: false
+    license: "MIT"
+    tags: [small, reasoning]
+    description: "MIT-licensed 3.8B with very long context and strong reasoning."
+
+  # ---- TinyLlama (testing) --------------------------------------------------
+  - key: tinyllama-1.1b-chat
+    name: "TinyLlama 1.1B Chat"
+    family: llama
+    hf_id: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+    unsloth_id: unsloth/tinyllama-chat
+    unsloth_4bit_id: unsloth/tinyllama-chat-bnb-4bit
+    params_b: 1.1
+    context_length: 2048
+    chat_template: chatml
+    gated: false
+    license: "Apache-2.0"
+    tags: [tiny]
+    description: "Smallest option — for pipeline smoke tests, not production quality."
+
+  # ---- Alibaba Qwen 3 (latest generation) ----------------------------------
+  - key: qwen3-4b
+    name: "Qwen3 4B"
+    family: qwen
+    hf_id: Qwen/Qwen3-4B
+    unsloth_id: unsloth/Qwen3-4B
+    unsloth_4bit_id: unsloth/Qwen3-4B-bnb-4bit
+    params_b: 4.02
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [small, multilingual, reasoning]
+    description: "Latest-gen Qwen3, compact and strong. Apache-2.0."
+
+  - key: qwen3-8b
+    name: "Qwen3 8B"
+    family: qwen
+    hf_id: Qwen/Qwen3-8B
+    unsloth_id: unsloth/Qwen3-8B
+    unsloth_4bit_id: unsloth/Qwen3-8B-bnb-4bit
+    params_b: 8.19
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [recommended, general, multilingual, reasoning]
+    description: "Excellent all-round latest-gen model. Apache-2.0; QLoRA fits a single GPU."
+
+  - key: qwen3-14b
+    name: "Qwen3 14B"
+    family: qwen
+    hf_id: Qwen/Qwen3-14B
+    unsloth_id: unsloth/Qwen3-14B
+    unsloth_4bit_id: unsloth/Qwen3-14B-bnb-4bit
+    params_b: 14.8
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [general, multilingual, reasoning]
+    description: "Higher-capacity Qwen3. QLoRA recommended."
+
+  - key: qwen2.5-32b-instruct
+    name: "Qwen2.5 32B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-32B-Instruct
+    unsloth_id: unsloth/Qwen2.5-32B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-32B-Instruct-bnb-4bit
+    params_b: 32.5
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [large, general, multilingual]
+    description: "Large Qwen2.5. QLoRA on a 24 GB+ GPU."
+
+  # ---- Qwen2.5 Coder (more sizes) ------------------------------------------
+  - key: qwen2.5-coder-1.5b-instruct
+    name: "Qwen2.5 Coder 1.5B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-Coder-1.5B-Instruct
+    unsloth_id: unsloth/Qwen2.5-Coder-1.5B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-Coder-1.5B-Instruct-bnb-4bit
+    params_b: 1.54
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [small, code]
+    description: "Tiny code model — fast iteration on coding tasks."
+
+  - key: qwen2.5-coder-14b-instruct
+    name: "Qwen2.5 Coder 14B Instruct"
+    family: qwen
+    hf_id: Qwen/Qwen2.5-Coder-14B-Instruct
+    unsloth_id: unsloth/Qwen2.5-Coder-14B-Instruct
+    unsloth_4bit_id: unsloth/Qwen2.5-Coder-14B-Instruct-bnb-4bit
+    params_b: 14.7
+    context_length: 32768
+    chat_template: qwen-2.5
+    gated: false
+    license: "Apache-2.0"
+    tags: [code]
+    description: "Stronger code model for larger codebases."
+
+  # ---- Meta Llama 3.3 ------------------------------------------------------
+  - key: llama-3.3-70b-instruct
+    name: "Llama 3.3 70B Instruct"
+    family: llama
+    hf_id: meta-llama/Llama-3.3-70B-Instruct
+    unsloth_id: unsloth/Llama-3.3-70B-Instruct
+    unsloth_4bit_id: unsloth/Llama-3.3-70B-Instruct-bnb-4bit
+    params_b: 70.6
+    context_length: 131072
+    chat_template: llama-3.1
+    gated: true
+    license: "Llama 3.3 Community License"
+    tags: [large, general]
+    description: "Flagship Llama. Needs a large GPU (~40 GB+) even with QLoRA."
+
+  # ---- Google Gemma 3 ------------------------------------------------------
+  - key: gemma-3-4b-it
+    name: "Gemma 3 4B Instruct"
+    family: gemma2
+    hf_id: google/gemma-3-4b-it
+    unsloth_id: unsloth/gemma-3-4b-it
+    unsloth_4bit_id: unsloth/gemma-3-4b-it-bnb-4bit
+    params_b: 4.3
+    context_length: 131072
+    chat_template: gemma2
+    gated: true
+    license: "Gemma Terms of Use"
+    tags: [small, general, multilingual]
+    description: "Latest Gemma, long context. Accept Gemma terms on HF first."
+
+  - key: gemma-3-12b-it
+    name: "Gemma 3 12B Instruct"
+    family: gemma2
+    hf_id: google/gemma-3-12b-it
+    unsloth_id: unsloth/gemma-3-12b-it
+    unsloth_4bit_id: unsloth/gemma-3-12b-it-bnb-4bit
+    params_b: 12.2
+    context_length: 131072
+    chat_template: gemma2
+    gated: true
+    license: "Gemma Terms of Use"
+    tags: [general, multilingual]
+    description: "Mid-size Gemma 3. QLoRA on 16–24 GB GPUs."
+
+  - key: gemma-2-27b-it
+    name: "Gemma 2 27B Instruct"
+    family: gemma2
+    hf_id: google/gemma-2-27b-it
+    unsloth_id: unsloth/gemma-2-27b-it
+    unsloth_4bit_id: unsloth/gemma-2-27b-it-bnb-4bit
+    params_b: 27.2
+    context_length: 8192
+    chat_template: gemma2
+    gated: true
+    license: "Gemma Terms of Use"
+    tags: [large, general]
+    description: "Large Gemma 2. QLoRA on a 24 GB+ GPU."
+
+  # ---- Mistral Nemo --------------------------------------------------------
+  - key: mistral-nemo-instruct-2407
+    name: "Mistral Nemo 12B Instruct"
+    family: mistral
+    hf_id: mistralai/Mistral-Nemo-Instruct-2407
+    unsloth_id: unsloth/Mistral-Nemo-Instruct-2407
+    unsloth_4bit_id: unsloth/Mistral-Nemo-Instruct-2407-bnb-4bit
+    params_b: 12.2
+    context_length: 131072
+    chat_template: mistral
+    gated: false
+    license: "Apache-2.0"
+    tags: [general, multilingual]
+    description: "12B Mistral with very long context. Apache-2.0."
+
+  # ---- Microsoft Phi-4 -----------------------------------------------------
+  - key: phi-4
+    name: "Phi-4 (14B)"
+    family: phi-4
+    hf_id: microsoft/phi-4
+    unsloth_id: unsloth/phi-4
+    unsloth_4bit_id: unsloth/phi-4-bnb-4bit
+    params_b: 14.7
+    context_length: 16384
+    chat_template: phi-4
+    gated: false
+    license: "MIT"
+    tags: [general, reasoning]
+    description: "Microsoft's strong 14B, MIT-licensed. Excellent reasoning."
+
+  # ---- DeepSeek-R1 distilled (reasoning; uses native chat template) --------
+  - key: deepseek-r1-distill-qwen-1.5b
+    name: "DeepSeek-R1 Distill Qwen 1.5B"
+    family: qwen
+    hf_id: deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
+    unsloth_id: unsloth/DeepSeek-R1-Distill-Qwen-1.5B
+    unsloth_4bit_id: unsloth/DeepSeek-R1-Distill-Qwen-1.5B-bnb-4bit
+    params_b: 1.78
+    context_length: 131072
+    chat_template: "none"
+    gated: false
+    license: "MIT"
+    tags: [small, reasoning]
+    description: "Tiny reasoning-distilled model for chain-of-thought tasks."
+
+  - key: deepseek-r1-distill-qwen-7b
+    name: "DeepSeek-R1 Distill Qwen 7B"
+    family: qwen
+    hf_id: deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+    unsloth_id: unsloth/DeepSeek-R1-Distill-Qwen-7B
+    unsloth_4bit_id: unsloth/DeepSeek-R1-Distill-Qwen-7B-bnb-4bit
+    params_b: 7.62
+    context_length: 131072
+    chat_template: "none"
+    gated: false
+    license: "MIT"
+    tags: [reasoning]
+    description: "Reasoning-distilled 7B with strong step-by-step problem solving."
+
+  - key: deepseek-r1-distill-llama-8b
+    name: "DeepSeek-R1 Distill Llama 8B"
+    family: llama
+    hf_id: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+    unsloth_id: unsloth/DeepSeek-R1-Distill-Llama-8B
+    unsloth_4bit_id: unsloth/DeepSeek-R1-Distill-Llama-8B-bnb-4bit
+    params_b: 8.03
+    context_length: 131072
+    chat_template: "none"
+    gated: false
+    license: "MIT / Llama 3.1 Community License"
+    tags: [reasoning]
+    description: "Reasoning-distilled Llama 8B."
+
+  # ---- HuggingFace SmolLM2 -------------------------------------------------
+  - key: smollm2-1.7b-instruct
+    name: "SmolLM2 1.7B Instruct"
+    family: llama
+    hf_id: HuggingFaceTB/SmolLM2-1.7B-Instruct
+    unsloth_id: unsloth/SmolLM2-1.7B-Instruct
+    unsloth_4bit_id: unsloth/SmolLM2-1.7B-Instruct-bnb-4bit
+    params_b: 1.71
+    context_length: 8192
+    chat_template: chatml
+    gated: false
+    license: "Apache-2.0"
+    tags: [tiny, small]
+    description: "Compact, fully-open small model. Apache-2.0."

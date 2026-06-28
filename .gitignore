@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.cache/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# -----------------------------------------------------------------------------
+# LLM Studio runtime data — large and machine-specific. Never commit.
+# ANCHORED to the repo root (leading "/") so these only match top-level runtime
+# directories and NEVER collide with source packages such as
+# src/llmstudio/core/data/ or src/llmstudio/core/models/.
+# Override the runtime root with LLMSTUDIO_HOME.
+# -----------------------------------------------------------------------------
+/workspace/
+/data/
+/.llmstudio/
+/hf_cache/
+/models_cache/
+/checkpoints/
+/runs/
+/uploads/
+/datasets/
+/outputs/
+/logs/
+
+# Model weight blobs / databases (never part of source)
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+*.log
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
